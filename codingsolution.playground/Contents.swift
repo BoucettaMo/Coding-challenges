@@ -206,3 +206,63 @@ func peakArray(_ array: [Int] ) -> Int {
     return 0
 }
 
+// Peak matrix
+
+
+
+func submatrix0fmatrix(matrix: [[Int]], firstColumn: Int, secondColumn: Int) -> [[Int]] {
+
+    var submatrix = Array(repeating: [0], count: matrix.count)
+
+    for i in 0..<matrix.count {
+        submatrix[i] = Array(matrix[i][firstColumn...secondColumn])
+    }
+    return submatrix
+    }
+
+func column(matrix:[[Int]], index: Int) -> [Int] {
+
+    var column = Array(repeating: 0, count: matrix.count)
+
+    for i in 0..<matrix.count {
+        column[i] = matrix[i][index]
+    }
+
+    return column
+}
+
+
+
+
+
+
+
+func peakMatrix(_ matrix: [[Int]] ) -> Int {
+
+    let n = matrix[0].count / 2
+    let p = matrix[0].count
+
+     if p == 1 {
+        return column(matrix: matrix, index: 0).max()!
+    }
+    if p == 2 {
+        return max(column(matrix: matrix, index: 0).max()!,column(matrix: matrix, index: 1).max()!)
+    }
+
+    let m = column(matrix: matrix, index: n).max()!
+    let j = column(matrix: matrix, index: n).firstIndex(of: m)!
+
+    if matrix[j][n-1] <= m && matrix[j][n+1] <= m {
+        return m
+    }
+    if matrix[j][n-1] > m {
+        return peakMatrix(submatrix0fmatrix(matrix: matrix, firstColumn: 0, secondColumn: n-1))
+    }
+
+    if matrix[j][n+1] > m {
+        return peakMatrix(submatrix0fmatrix(matrix: matrix, firstColumn: n+1, secondColumn: p-1))
+    }
+    return 0
+}
+
+
